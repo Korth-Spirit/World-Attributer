@@ -18,9 +18,11 @@
 # LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-from typing import Callable
+from typing import Callable, Iterable
 
-from korth_spirit import WorldEnum, Instance
+from korth_spirit import Instance
+from korth_spirit.data import AttributeData
+from korth_spirit.query import QueryEnum
 
 
 def if_begins_with(event: "Event", beginning: str, func: Callable):
@@ -49,8 +51,8 @@ def get_attribute(instance: Instance, attribute: str) -> str:
         str: The value of the attribute.
     """
     try:
-        value = instance.get_world().get_attribute(attribute)
-        return f"{attribute} = {value}"
+        value: AttributeData = instance.query(QueryEnum.WORLD, attribute=attribute)
+        return f"{attribute} = {value.value}"
     except Exception as e:
         return f"Error: {e} -- {attribute}"
 
@@ -72,7 +74,7 @@ def set_attribute(instance: Instance, attribute: str, value: str) -> str:
     except Exception as e:
         return f"Error: {e}"
 
-def get_all_attributes(instance: Instance) -> str:
+def get_all_attributes(instance: Instance) -> Iterable[AttributeData]:
     """
     Get all the world attributes.
 
@@ -80,10 +82,9 @@ def get_all_attributes(instance: Instance) -> str:
         instance (Instance): The instance to get the attributes from.
 
     Returns:
-        str: The attributes.
+        Iterable[AttributeData]: The attributes.
     """
-    for attribute in WorldEnum:
-        yield get_attribute(instance, attribute)
+    return instance.query(QueryEnum.WORLD)
 
 def every_x(iterable: "Iterable", x: int, func: Callable) -> str:
     """

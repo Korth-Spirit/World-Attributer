@@ -68,7 +68,7 @@ with Instance(name="Portal Mage") as bot:
                             x=5,
                             func=lambda attributes: bot.whisper(
                                 session=event.chat_session,
-                                message="\n".join(attributes)
+                                message="\n".join(f"{attr.name} = {attr.value}" for attr in attributes)
                             )
                         )
                     )
