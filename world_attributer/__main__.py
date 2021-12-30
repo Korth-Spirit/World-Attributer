@@ -24,57 +24,55 @@ from korth_spirit.coords import Coordinates
 from utilities import (every_x, get_all_attributes, get_attribute,
                        if_begins_with, set_attribute)
 
-with Instance(name="Portal Mage") as bot:
+with Instance(name=input("Bot Name: ")) as bot:
     try:
-        (
-            bot
-                .login(
-                    citizen_number=(int(input("Citizen Number: "))),
-                    password=input("Password: ")
-                ).subscribe(
-                    EventEnum.AW_EVENT_CHAT,
-                    lambda event: if_begins_with(
-                        event=event,
-                        beginning="/get attribute",
-                        func=lambda attribute: bot.whisper(
-                            session=event.chat_session,
-                            message=get_attribute(
-                                instance=bot,
-                                attribute=attribute
-                            )
-                        )
+        bot.login(
+            citizen_number=(int(input("Citizen Number: "))),
+            password=input("Password: ")
+        ).subscribe(
+            EventEnum.AW_EVENT_CHAT,
+            lambda event: if_begins_with(
+                event=event,
+                beginning="/get attribute",
+                func=lambda attribute: bot.whisper(
+                    session=event.chat_session,
+                    message=get_attribute(
+                        instance=bot,
+                        attribute=attribute
                     )
-                ).subscribe(
-                    EventEnum.AW_EVENT_CHAT,
-                    lambda event: if_begins_with(
-                        event=event,
-                        beginning="/set attribute",
-                        func=lambda command_string: bot.whisper(
-                            session=event.chat_session,
-                            message=set_attribute(
-                                instance=bot,
-                                attribute=command_string.split(" ")[0],
-                                value=" ".join(command_string.split(" ")[1:])
-                            )
-                        )
+                )
+            )
+        ).subscribe(
+            EventEnum.AW_EVENT_CHAT,
+            lambda event: if_begins_with(
+                event=event,
+                beginning="/set attribute",
+                func=lambda command_string: bot.whisper(
+                    session=event.chat_session,
+                    message=set_attribute(
+                        instance=bot,
+                        attribute=command_string.split(" ")[0],
+                        value=" ".join(command_string.split(" ")[1:])
                     )
-                ).subscribe(
-                    EventEnum.AW_EVENT_CHAT,
-                    lambda event: if_begins_with(
-                        event=event,
-                        beginning="/get all attributes",
-                        func=lambda _: every_x(
-                            iterable=get_all_attributes(instance=bot),
-                            x=5,
-                            func=lambda attributes: bot.whisper(
-                                session=event.chat_session,
-                                message="\n".join(f"{attr.name} = {attr.value}" for attr in attributes)
-                            )
-                        )
+                )
+            )
+        ).subscribe(
+            EventEnum.AW_EVENT_CHAT,
+            lambda event: if_begins_with(
+                event=event,
+                beginning="/get all attributes",
+                func=lambda _: every_x(
+                    iterable=get_all_attributes(instance=bot),
+                    x=5,
+                    func=lambda attributes: bot.whisper(
+                        session=event.chat_session,
+                        message="\n".join(f"{attr.name} = {attr.value}" for attr in attributes)
                     )
-                ).enter_world(input("World: "))
-                .move_to(Coordinates(0, 0, 0))
-        )
+                )
+            )
+        ).enter_world(
+            input("World: ")
+        ).move_to(Coordinates(0, 0, 0))
     except Exception as e:
         print("An error occurred:", e)
         exit()
