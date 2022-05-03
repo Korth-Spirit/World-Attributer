@@ -1,5 +1,6 @@
 __pycache__
 .venv
+configuration.json
 
 # Active Worlds Software Development Kit
 aw.dll
