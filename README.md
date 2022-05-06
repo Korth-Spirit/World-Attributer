@@ -45,6 +45,38 @@ You may also set attributes the same way.
 /set attribute title "My World"
 ```
 
+# Configuration
+
+This bot uses a json configuration file named "configuration.json" located in the same directory as the application.
+
+| Variable | Description |
+|---------|-------------|
+| `BOT_NAME` | The name of the bot. |
+| `CITIZEN_NUMBER` | The owner of the bot. |
+| `PASSWORD` | The password of the bot. |
+| `WORLD_NAME` | The name of the world to connect to. |
+| `WORLD_X` | The x coordinate of the world to connect to. |
+| `WORLD_Y` | The y coordinate of the world to connect to. |
+| `WORLD_Z` | The z coordinate of the world to connect to. |
+
+X coordinates are west/east where west is positive and east is negative.
+Y coordinates represent height where up is positive and down is negative and ground is 0.
+Z coordinates are north/south where north is positive and south is negative.
+
+Configuration example:
+```json
+{
+    "bot_name": "Plugin Bot",
+    "world_name": "Test World",
+    "world_coordinates": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+    },
+    "citizen_number": 123456,
+    "password": "password"
+}
+```
 
 # License
 
